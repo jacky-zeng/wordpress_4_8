@@ -195,3 +195,56 @@ function twentyseventeen_category_transient_flusher() {
 }
 add_action( 'edit_category', 'twentyseventeen_category_transient_flusher' );
 add_action( 'save_post',     'twentyseventeen_category_transient_flusher' );
+
+function getClientIP()
+{
+    if (isset($_SERVER)){
+        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])){
+            $realip = $_SERVER["HTTP_X_FORWARDED_FOR"];
+        } else if (isset($_SERVER["HTTP_CLIENT_IP"])) {
+            $realip = $_SERVER["HTTP_CLIENT_IP"];
+        } else {
+            $realip = $_SERVER["REMOTE_ADDR"];
+        }
+    } else {
+        if (getenv("HTTP_X_FORWARDED_FOR")){
+            $realip = getenv("HTTP_X_FORWARDED_FOR");
+        } else if (getenv("HTTP_CLIENT_IP")) {
+            $realip = getenv("HTTP_CLIENT_IP");
+        } else {
+            $realip = getenv("REMOTE_ADDR");
+        }
+    }
+    return $realip;
+}
+
+//记录用户访问信息
+function buriedPoint($wpdb, $post_id, $client_ip)
+{
+    $insert_arr = array(
+        'post_id'     => $post_id,                //文章id
+        'client_ip'   => $client_ip,              //客户端ip地址
+        'serverTime'  => date('Y-m-d H:i:s'),     //服务器时间
+        'serverYear'  => date('Y'),               //服务器时间年
+        'serverMonth' => date('m'),               //服务器时间月
+        'serverDay'   => date('d'),               //服务器时间日
+    );
+    //访问量+1
+    $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->posts SET visit_times = visit_times + 1 WHERE id = %s", $post_id ) );
+    //记录访问者信息
+    $wpdb->insert( 'wp_visitors', $insert_arr );
+
+//    $data['post_id']     = $post_id;              //文章id
+//    $data['client_ip']   = $client_ip;            //客户端ip地址
+//    $data['serverTime']  = date('Y-m-d H:i:s');   //服务器时间
+//    $data['serverYear']  = date('Y');             //服务器时间年
+//    $data['serverMonth'] = date('m');             //服务器时间月
+//    $data['serverDay']   = date('d');             //服务器时间日
+//
+//    $catalog = ABSPATH . 'logs/';
+//    $filename = $catalog . date('Ymd') . '.log';
+//    if (!file_exists($catalog)) {
+//        mkdir(iconv('utf-8', 'gbk', $catalog), 0777, true);
+//    }
+//    file_put_contents($filename, json_encode($data) . PHP_EOL, FILE_APPEND | LOCK_EX);
+}

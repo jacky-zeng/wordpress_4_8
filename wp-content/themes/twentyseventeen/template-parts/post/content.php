@@ -72,4 +72,10 @@
 	}
 	?>
 
+	<?php
+	if ( is_single() ) {
+		buriedPoint($wpdb, get_the_ID(), getClientIP()); //记录用户访问信息
+	}
+	?>
+
 </article><!-- #post-## -->
