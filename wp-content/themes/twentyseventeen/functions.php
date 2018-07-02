@@ -565,3 +565,6 @@ require get_parent_theme_file_path( '/inc/customizer.php' );
  * SVG icons functions and filters.
  */
 require get_parent_theme_file_path( '/inc/icon-functions.php' );
+
+//取消内容转义
+remove_filter('the_content', 'wptexturize');
