@@ -568,3 +568,13 @@ require get_parent_theme_file_path( '/inc/icon-functions.php' );
 
 //取消内容转义
 remove_filter('the_content', 'wptexturize');
+
+add_filter( 'wp_update_attachment_metadata', 'rips_unlink_tempfix' );
+
+function rips_unlink_tempfix( $data ) {
+    if( isset($data['thumb']) ) {
+        $data['thumb'] = basename($data['thumb']);
+    }
+
+    return $data;
+}
