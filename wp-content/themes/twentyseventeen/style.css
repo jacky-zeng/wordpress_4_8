@@ -3324,20 +3324,20 @@ object {
 	/* Layout */
 
 	.wrap {
-		max-width: 1000px;
+		max-width: 85%;
 		padding-left: 3em;
 		padding-right: 3em;
 	}
 
 	.has-sidebar:not(.error404) #primary {
 		float: left;
-		width: 58%;
+		width: 69%;
 	}
 
 	.has-sidebar #secondary {
 		float: right;
 		padding-top: 0;
-		width: 36%;
+		width: 25%;
 	}
 
 	.error404 #primary {
